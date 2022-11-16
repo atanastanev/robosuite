@@ -17,7 +17,6 @@ class wx250sBase(GripperModel):
 
     def __init__(self, idn=0):
         super().__init__(xml_path_completion("grippers/wx250s_gripper.xml"), idn=idn)
-        print("konstruktor na gripper")
 
     def format_action(self, action):
         return action
@@ -31,6 +30,8 @@ class wx250sBase(GripperModel):
         return {
             "left_finger": [],
             "right_finger": [],
+            "left_fingerpad": [],
+            "right_fingerpad": [],
         }
 
 

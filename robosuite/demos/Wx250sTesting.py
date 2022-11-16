@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     # Choose environment and add it to options
     #options["env_name"] = choose_environment()
-    options["env_name"] = "NutAssembly"
+    options["env_name"] = "Lift"
 
     # If a multi-arm environment has been chosen, choose configuration and appropriate robot(s)
     if "TwoArm" in options["env_name"]:

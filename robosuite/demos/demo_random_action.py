@@ -59,9 +59,16 @@ if __name__ == "__main__":
 
     # Get action limits
     low, high = env.action_spec
+    print(low, high)
 
     # do visualization
     for i in range(10000):
-        action = np.random.uniform(low, high)
+        action = np.random.uniform(low,high)
+        action = [0, 0, 0, 0, 0, 0, 0.1]
         obs, reward, done, _ = env.step(action)
+        #print("reward", reward)
+        #print("obs", obs)
+        #print("done", done)
+        #print(_)
+        
         env.render()

@@ -29,11 +29,12 @@ class wx250s(ManipulatorModel):
 
     @property
     def default_controller_config(self):
-        return "OSC_POSE"
+        return "default_panda"
 
     @property
     def init_qpos(self):
-    	return np.array([2.692, -6.680, 4.000, 3.170, 1.550, 1.760, 3.142])
+    	return np.array([3.2, -6.380, 3.250, 3.170, 1.550, 0.060, 3.142])
+    	#return np.array([-np.pi, np.pi / 16.0, -np.pi, -np.pi / 2.0 - np.pi / 3.0, 0, -np.pi - 0.2, np.pi / 4])
 	
     @property
     def base_xpos_offset(self):

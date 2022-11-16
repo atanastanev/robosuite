@@ -10,6 +10,8 @@ from robosuite.utils.mjcf_utils import CustomMaterial
 from robosuite.utils.observables import Observable, sensor
 from robosuite.utils.placement_samplers import UniformRandomSampler
 from robosuite.utils.transform_utils import convert_quat
+from gym import error, spaces
+import math
 
 
 class Lift(SingleArmEnv):
@@ -131,7 +133,13 @@ class Lift(SingleArmEnv):
 
     Raises:
         AssertionError: [Invalid number of robots specified]
-    """
+        """
+    metadata = {
+        "render_modes": ["human", "rgb_array"],
+        "render_fps": 50,
+    }
+    
+   
 
     def __init__(
         self,
@@ -179,6 +187,51 @@ class Lift(SingleArmEnv):
 
         # object placement initializer
         self.placement_initializer = placement_initializer
+
+        low = np.array(
+            [
+                # these are bounds for position
+                # realistically the environment should have ended
+                # long before we reach more than 50% outside
+                -1.5,
+                -1.5,
+                # velocity bounds is 5x rated speed
+                -5.0,
+                -5.0,
+                -math.pi,
+                -5.0,
+                -0.0,
+                -0.0,
+            ]
+        ).astype(np.float32)
+        high = np.array(
+            [
+                # these are bounds for position
+                # realistically the environment should have ended
+                # long before we reach more than 50% outside
+                1.5,
+                1.5,
+                # velocity bounds is 5x rated speed
+                5.0,
+                5.0,
+                math.pi,
+                5.0,
+                1.0,
+                1.0,
+            ]
+        ).astype(np.float32)
+
+        # useful range is -1 .. +1, but spikes can be higher
+        #self.observation_space = spaces.Box(low, high)
+        
+        #self.action_space = spaces.Discrete(4)
+
+        #self.observation_space = np.array(BoxObject.get_visual_attrib_template())
+        #self.observation_space = space
+        
+        #self.action_space = np.array([])
+
+
 
         super().__init__(
             robots=robots,
@@ -296,8 +349,8 @@ class Lift(SingleArmEnv):
         )
         self.cube = BoxObject(
             name="cube",
-            size_min=[0.020, 0.020, 0.020],  # [0.015, 0.015, 0.015],
-            size_max=[0.022, 0.022, 0.022],  # [0.018, 0.018, 0.018])
+            size_min=[0.015, 0.015, 0.015],  # [0.015, 0.015, 0.015],
+            size_max=[0.018, 0.018, 0.018],  # [0.018, 0.018, 0.018])
             rgba=[1, 0, 0, 1],
             material=redwood,
         )
@@ -310,8 +363,8 @@ class Lift(SingleArmEnv):
             self.placement_initializer = UniformRandomSampler(
                 name="ObjectSampler",
                 mujoco_objects=self.cube,
-                x_range=[-0.03, 0.03],
-                y_range=[-0.03, 0.03],
+                x_range=[0, 0], #-0.03, 0.03
+                y_range=[0, 0], #-0.03, 0.03
                 rotation=None,
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=True,
@@ -425,4 +478,6 @@ class Lift(SingleArmEnv):
         table_height = self.model.mujoco_arena.table_offset[2]
 
         # cube is higher than the table top above a margin
+        #return cube_height > table_height + 0.04
         return cube_height > table_height + 0.04
+

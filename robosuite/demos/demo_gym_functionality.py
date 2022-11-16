@@ -40,7 +40,7 @@ if __name__ == "__main__":
     env = GymWrapper(
         suite.make(
             "Lift",
-            robots="Sawyer",  # use Sawyer robot
+            robots="wx250s",  # use Sawyer robot
             use_camera_obs=False,  # do not use pixel observations
             has_offscreen_renderer=False,  # not needed since not using pixel obs
             has_renderer=True,  # make sure we can render to the screen
